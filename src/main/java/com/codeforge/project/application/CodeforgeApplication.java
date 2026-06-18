@@ -1,4 +1,4 @@
-package com.codeforge.project.codeforge;
+package com.codeforge.project.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

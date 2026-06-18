@@ -1,4 +1,4 @@
-package com.codeforge.project.codeforge;
+package com.codeforge.project.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
