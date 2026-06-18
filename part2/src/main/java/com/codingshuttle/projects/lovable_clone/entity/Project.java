@@ -1,4 +1,4 @@
-package com.codeforge.project.application.entity;
+package com.codingshuttle.projects.lovable_clone.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,15 +10,18 @@ import java.time.Instant;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
-    Long id;
-    String email;
-    String passwordHash;
+public class Project {
 
+    Long id;
 
     String name;
-    String avatarUrl;
+
+    User owner;
+
+    Boolean isPublic = false;
+
     Instant createdAt;
     Instant updatedAt;
-    Instant deletedAt; // soft delete
+    Instant deletedAt; //soft delete
+
 }
