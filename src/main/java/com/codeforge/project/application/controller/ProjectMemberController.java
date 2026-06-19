@@ -5,12 +5,14 @@ import com.codeforge.project.application.dto.member.MemberResponse;
 import com.codeforge.project.application.dto.member.UpdateMemberRoleRequest;
 import com.codeforge.project.application.entity.ProjectMember;
 import com.codeforge.project.application.service.ProjectMemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/projects/{projectId}/members")
 @RequiredArgsConstructor
@@ -20,18 +22,16 @@ public class ProjectMemberController {
 
     @GetMapping
     public ResponseEntity<List<MemberResponse>> getProjectMembers(@PathVariable Long projectId) {
-        Long userId = 1L;
-        return ResponseEntity.ok(projectMemberService.getProjectMembers(projectId, userId));
+        return ResponseEntity.ok(projectMemberService.getProjectMembers(projectId));
     }
 
     @PostMapping
     public ResponseEntity<MemberResponse> inviteMember(
             @PathVariable Long projectId,
-            @RequestBody InviteMemberRequest request
+            @RequestBody @Valid InviteMemberRequest request
     ) {
-        Long userId = 1L;
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                projectMemberService.inviteMember(projectId, request, userId)
+                projectMemberService.inviteMember(projectId, request)
         );
     }
 
@@ -39,10 +39,9 @@ public class ProjectMemberController {
     public ResponseEntity<MemberResponse> updateMemberRole(
             @PathVariable Long projectId,
             @PathVariable Long memberId,
-            @RequestBody UpdateMemberRoleRequest request
+            @RequestBody @Valid UpdateMemberRoleRequest request
     ) {
-        Long userId = 1L;
-        return ResponseEntity.ok(projectMemberService.updateMemberRole(projectId, memberId, request, userId));
+        return ResponseEntity.ok(projectMemberService.updateMemberRole(projectId, memberId, request));
     }
 
     @DeleteMapping("/{memberId}")
@@ -50,8 +49,7 @@ public class ProjectMemberController {
             @PathVariable Long projectId,
             @PathVariable Long memberId
     ) {
-        Long userId = 1L;
-        projectMemberService.removeProjectMember(projectId, memberId, userId);
+        projectMemberService.removeProjectMember(projectId, memberId);
         return ResponseEntity.noContent().build();
     }
 
