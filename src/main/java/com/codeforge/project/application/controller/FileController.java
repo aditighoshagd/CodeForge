@@ -21,16 +21,17 @@ public class FileController {
 
     @GetMapping
     public ResponseEntity<List<FileNode>> getFileTree(@PathVariable Long projectId) {
-        Long userId = 1L; // TODO: replace with real Spring Security principal
+        Long userId = 1L;
         return ResponseEntity.ok(fileService.getFileTree(projectId, userId));
     }
 
-    @GetMapping("/{*path}") // e.g. /src/hooks/get-user-hook.jsx
+    @GetMapping("/{*path}") // /src/hooks/get-user-hook.jsx
     public ResponseEntity<FileContentResponse> getFile(
             @PathVariable Long projectId,
             @PathVariable String path
     ) {
-        Long userId = 1L; // TODO: replace with real Spring Security principal
+        Long userId = 1L;
         return ResponseEntity.ok(fileService.getFileContent(projectId, path, userId));
     }
+
 }
