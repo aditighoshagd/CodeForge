@@ -1,8 +1,5 @@
 package com.codeforge.project.application.enums;
 
 public enum PreviewStatus {
-    CREATING,
-    RUNNING,
-    FAILED,
-    TERMINATED
+    CREATING, RUNNING, FAILED, TERMINATED
 }

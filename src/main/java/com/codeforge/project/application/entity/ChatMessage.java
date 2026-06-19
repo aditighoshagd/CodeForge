@@ -15,9 +15,14 @@ public class ChatMessage {
 
     Long id;
     ChatSession chatSession;
+
     String content;
+
     MessageRole role;
-    String toolCalls;
+
+    String toolCalls; // JSON Array of Tools Called
+
     Integer tokensUsed;
+
     Instant createdAt;
 }

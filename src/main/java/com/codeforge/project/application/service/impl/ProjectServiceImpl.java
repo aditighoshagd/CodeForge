@@ -2,9 +2,15 @@ package com.codeforge.project.application.service.impl;
 
 import com.codeforge.project.application.dto.project.ProjectRequest;
 import com.codeforge.project.application.dto.project.ProjectResponse;
+import com.codeforge.project.application.dto.project.ProjectSummaryResponse;
 import com.codeforge.project.application.entity.Project;
+import com.codeforge.project.application.entity.ProjectMember;
+import com.codeforge.project.application.entity.ProjectMemberId;
 import com.codeforge.project.application.entity.User;
+import com.codeforge.project.application.enums.ProjectRole;
+import com.codeforge.project.application.error.ResourceNotFoundException;
 import com.codeforge.project.application.mapper.ProjectMapper;
+import com.codeforge.project.application.repository.ProjectMemberRepository;
 import com.codeforge.project.application.repository.ProjectRepository;
 import com.codeforge.project.application.repository.UserRepository;
 import com.codeforge.project.application.service.ProjectService;
@@ -14,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -25,46 +32,70 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectRepository projectRepository;
     UserRepository userRepository;
     ProjectMapper projectMapper;
+    ProjectMemberRepository projectMemberRepository;
 
     @Override
     public ProjectResponse createProject(ProjectRequest request, Long userId) {
 
-        User owner = userRepository.findById(userId).orElseThrow();
+        User owner = userRepository.findById(userId).orElseThrow(
+                () -> new ResourceNotFoundException("User", userId.toString())
+        );
 
         Project project = Project.builder()
                 .name(request.name())
-                .owner(owner)
                 .isPublic(false)
                 .build();
-
         project = projectRepository.save(project);
+
+
+        ProjectMemberId projectMemberId = new ProjectMemberId(project.getId(), owner.getId());
+        ProjectMember projectMember = ProjectMember.builder()
+                .id(projectMemberId)
+                .projectRole(ProjectRole.OWNER)
+                .user(owner)
+                .acceptedAt(Instant.now())
+                .invitedAt(Instant.now())
+                .project(project)
+                .build();
+        projectMemberRepository.save(projectMember);
+
         return projectMapper.toProjectResponse(project);
     }
 
     @Override
     public List<ProjectSummaryResponse> getUserProjects(Long userId) {
-
-//        return projectRepository.findAllAccessibleByUser(userId)
-//                .stream()
-//                .map(projectMapper::toProjectSummaryResponse)
-//                .collect(Collectors.toList());
-
         var projects = projectRepository.findAllAccessibleByUser(userId);
         return projectMapper.toListOfProjectSummaryResponse(projects);
     }
 
     @Override
     public ProjectResponse getUserProjectById(Long id, Long userId) {
-        return null;
+        Project project = getAccessibleProjectById(id, userId);
+        return projectMapper.toProjectResponse(project);
     }
 
     @Override
     public ProjectResponse updateProject(Long id, ProjectRequest request, Long userId) {
-        return null;
+        Project project = getAccessibleProjectById(id, userId);
+
+        project.setName(request.name());
+        project = projectRepository.save(project);
+
+        return projectMapper.toProjectResponse(project);
     }
 
     @Override
     public void softDelete(Long id, Long userId) {
+        Project project = getAccessibleProjectById(id, userId);
 
+        project.setDeletedAt(Instant.now());
+        projectRepository.save(project);
+    }
+
+    ///  INTERNAL FUNCTIONS
+
+    public Project getAccessibleProjectById(Long projectId, Long userId) {
+        return projectRepository.findAccessibleProjectById(projectId, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project", projectId.toString()));
     }
 }

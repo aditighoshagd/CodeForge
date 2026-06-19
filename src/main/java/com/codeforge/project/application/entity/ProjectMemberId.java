@@ -1,15 +1,15 @@
 package com.codeforge.project.application.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Embeddable;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+@Embeddable
 @Getter
 @Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectMemberId {
-    //this is primary key
     Long projectId;
     Long userId;
 }

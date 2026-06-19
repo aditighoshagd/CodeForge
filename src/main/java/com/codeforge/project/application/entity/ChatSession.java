@@ -13,9 +13,13 @@ import java.time.Instant;
 public class ChatSession {
 
     Project project;
+
     User user;
+
     String title;
+
     Instant createdAt;
     Instant updatedAt;
-    Instant deletedAt;
+
+    Instant deletedAt; //soft delete
 }

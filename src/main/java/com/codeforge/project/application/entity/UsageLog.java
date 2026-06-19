@@ -7,9 +7,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 
-@Getter
-@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UsageLog {
 
     Long id;
@@ -21,7 +18,7 @@ public class UsageLog {
     Integer tokensUsed;
     Integer durationMs;
 
-    String metaData; // JSON of {model_used, prompt_used}
+    String metaData; // JSON of {model_used, prompt_used},
 
     Instant createdAt;
 }

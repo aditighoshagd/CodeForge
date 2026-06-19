@@ -1,5 +1,6 @@
 package com.codeforge.project.application.entity;
 
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,17 +15,18 @@ public class ProjectFile {
 
     Long id;
 
-    Project project;
+   Project project;
 
     String path;
 
     String minioObjectKey;
 
     Instant createdAt;
+
     Instant updatedAt;
 
     User createdBy;
-    User updatedBy;
 
+    User updatedBy;
 
 }
