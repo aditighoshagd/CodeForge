@@ -12,7 +12,6 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
-
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -29,6 +28,9 @@ public class User implements UserDetails {
     String username;
     String password;
     String name;
+
+    @Column(unique = true)
+    String stripeCustomerId;
 
     @CreationTimestamp
     Instant createdAt;
