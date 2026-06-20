@@ -8,6 +8,7 @@ import com.codeforge.project.application.entity.ProjectMember;
 import com.codeforge.project.application.entity.ProjectMemberId;
 import com.codeforge.project.application.entity.User;
 import com.codeforge.project.application.enums.ProjectRole;
+import com.codeforge.project.application.error.BadRequestException;
 import com.codeforge.project.application.error.ResourceNotFoundException;
 import com.codeforge.project.application.mapper.ProjectMapper;
 import com.codeforge.project.application.repository.ProjectMemberRepository;
@@ -15,6 +16,7 @@ import com.codeforge.project.application.repository.ProjectRepository;
 import com.codeforge.project.application.repository.UserRepository;
 import com.codeforge.project.application.security.AuthUtil;
 import com.codeforge.project.application.service.ProjectService;
+import com.codeforge.project.application.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -35,9 +39,15 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMapper projectMapper;
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
+    SubscriptionService subscriptionService;
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
+
+        if(!subscriptionService.canCreateNewProject()) {
+            throw new BadRequestException("User cannot create a New project with current Plan, Upgrade plan now.");
+        }
+
         Long userId = authUtil.getCurrentUserId();
 //        User owner = userRepository.findById(userId).orElseThrow(
 //                () -> new ResourceNotFoundException("User", userId.toString())
@@ -49,7 +59,6 @@ public class ProjectServiceImpl implements ProjectService {
                 .isPublic(false)
                 .build();
         project = projectRepository.save(project);
-
 
         ProjectMemberId projectMemberId = new ProjectMemberId(project.getId(), owner.getId());
         ProjectMember projectMember = ProjectMember.builder()

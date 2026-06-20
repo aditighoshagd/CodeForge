@@ -1,10 +1,21 @@
 package com.codeforge.project.application.service;
 
-import com.codeforge.project.application.dto.subscription.CheckoutRequest;
-import com.codeforge.project.application.dto.subscription.CheckoutResponse;
-import com.codeforge.project.application.dto.subscription.PortalResponse;
 import com.codeforge.project.application.dto.subscription.SubscriptionResponse;
+import com.codeforge.project.application.enums.SubscriptionStatus;
 
+import java.time.Instant;
 public interface SubscriptionService {
-    SubscriptionResponse getCurrentSubscription(Long userId);
+    SubscriptionResponse getCurrentSubscription();
+
+    void activateSubscription(Long userId, Long planId, String subscriptionId, String customerId);
+
+    void updateSubscription(String gatewaySubscriptionId, SubscriptionStatus status, Instant periodStart, Instant periodEnd, Boolean cancelAtPeriodEnd, Long planId);
+
+    void cancelSubscription(String gatewaySubscriptionId);
+
+    void renewSubscriptionPeriod(String subId, Instant periodStart, Instant periodEnd);
+
+    void markSubscriptionPastDue(String subId);
+
+    boolean canCreateNewProject();
 }
