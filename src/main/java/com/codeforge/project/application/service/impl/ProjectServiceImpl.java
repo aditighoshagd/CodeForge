@@ -16,6 +16,7 @@ import com.codeforge.project.application.repository.ProjectRepository;
 import com.codeforge.project.application.repository.UserRepository;
 import com.codeforge.project.application.security.AuthUtil;
 import com.codeforge.project.application.service.ProjectService;
+import com.codeforge.project.application.service.ProjectTemplateService;
 import com.codeforge.project.application.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -26,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
     SubscriptionService subscriptionService;
+    ProjectTemplateService projectTemplateService;
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
@@ -70,6 +71,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .project(project)
                 .build();
         projectMemberRepository.save(projectMember);
+
+        projectTemplateService.initializeProjectFromTemplate(project.getId());
 
         return projectMapper.toProjectResponse(project);
     }
