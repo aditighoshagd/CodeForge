@@ -39,12 +39,12 @@ public class FileTreeContextAdvisor implements StreamAdvisor {
     private ChatClientRequest augmentRequestWithFileTree(ChatClientRequest request, Long projectId) {
 
         List<Message> incomingMessages = request.prompt().getInstructions();
-
+//system prompt
         Message systemMessage = incomingMessages.stream()
                 .filter(m -> m.getMessageType() == MessageType.SYSTEM)
                 .findFirst()
                 .orElse(null);
-
+//user prompt
         List<Message> userMessages = incomingMessages.stream()
                 .filter(m -> m.getMessageType() != MessageType.SYSTEM)
                 .toList();
@@ -81,6 +81,13 @@ public class FileTreeContextAdvisor implements StreamAdvisor {
 }
 
 
+//exammple prompts
+//prompt 1 : you are a robot , you know a, b ,c . now do this . do my homework
+//prompt 2 : you are a robot , you know a, b ,c . now do this . sing a song
+//KEEP THE PREFIX SAME AND POST (WORK) STMT LATER
+//propmpts are divieded intop two parts - system and user prompts
+//system prompts example - you are a robot , you know a, b ,c . now do this
+//user prompt example - sing a song
 
 
 
