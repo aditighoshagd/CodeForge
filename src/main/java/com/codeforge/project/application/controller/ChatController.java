@@ -1,9 +1,10 @@
 package com.codeforge.project.application.controller;
 
 import com.codeforge.project.application.dto.chat.ChatRequest;
+import com.codeforge.project.application.dto.chat.ChatResponse;
 import com.codeforge.project.application.service.AiGenerationService;
+import com.codeforge.project.application.service.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
@@ -36,4 +37,3 @@ public class ChatController {
         return ResponseEntity.ok(chatService.getProjectChatHistory(projectId));
     }
 }
-

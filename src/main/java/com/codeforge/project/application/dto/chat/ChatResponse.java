@@ -1,6 +1,7 @@
 package com.codeforge.project.application.dto.chat;
 
 
+import com.codeforge.project.application.entity.ChatEvent;
 import com.codeforge.project.application.entity.ChatSession;
 import com.codeforge.project.application.enums.MessageRole;
 
