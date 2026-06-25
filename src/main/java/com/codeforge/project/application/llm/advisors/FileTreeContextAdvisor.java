@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -39,12 +40,12 @@ public class FileTreeContextAdvisor implements StreamAdvisor {
     private ChatClientRequest augmentRequestWithFileTree(ChatClientRequest request, Long projectId) {
 
         List<Message> incomingMessages = request.prompt().getInstructions();
-//system prompt
+
         Message systemMessage = incomingMessages.stream()
                 .filter(m -> m.getMessageType() == MessageType.SYSTEM)
                 .findFirst()
                 .orElse(null);
-//user prompt
+
         List<Message> userMessages = incomingMessages.stream()
                 .filter(m -> m.getMessageType() != MessageType.SYSTEM)
                 .toList();
@@ -56,7 +57,7 @@ public class FileTreeContextAdvisor implements StreamAdvisor {
             allMessages.add(systemMessage);
         }
 
-        List<FileNode> fileTree = projectFileService.getFileTree(projectId);
+        List<FileNode> fileTree = projectFileService.getFileTree(projectId).files();
         String fileTreeContext = "\n\n ---- FILE_TREE ----\n"+fileTree.toString();
         allMessages.add(new SystemMessage(fileTreeContext));
 
@@ -79,6 +80,21 @@ public class FileTreeContextAdvisor implements StreamAdvisor {
         return 0;
     }
 }
+
+
+
+
+
+
+// System Prompt + File Tree + User message
+
+
+
+
+
+
+// System Prompt + File Tree + User message
+
 
 
 //exammple prompts

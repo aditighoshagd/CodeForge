@@ -2,6 +2,7 @@ package com.codeforge.project.application.service.impl;
 
 import com.codeforge.project.application.dto.project.FileContentResponse;
 import com.codeforge.project.application.dto.project.FileNode;
+import com.codeforge.project.application.dto.project.FileTreeResponse;
 import com.codeforge.project.application.entity.Project;
 import com.codeforge.project.application.entity.ProjectFile;
 import com.codeforge.project.application.error.ResourceNotFoundException;
@@ -43,7 +44,8 @@ public class ProjectFileServiceImpl implements ProjectFileService {
     @Override
     public List<FileNode> getFileTree(Long projectId) {
         List<ProjectFile> projectFileList = projectFileRepository.findByProjectId(projectId);
-        return projectFileMapper.toListOfFileNode(projectFileList);
+        List<FileNode> projectFileNodes = projectFileMapper.toListOfFileNode(projectFileList);
+        return new FileTreeResponse(projectFileNodes).files();
     }
 
     @Override
