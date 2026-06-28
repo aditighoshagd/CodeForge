@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.List;
 
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -42,10 +43,10 @@ public class ProjectFileServiceImpl implements ProjectFileService {
 
 
     @Override
-    public List<FileNode> getFileTree(Long projectId) {
+    public FileTreeResponse getFileTree(Long projectId) {
         List<ProjectFile> projectFileList = projectFileRepository.findByProjectId(projectId);
         List<FileNode> projectFileNodes = projectFileMapper.toListOfFileNode(projectFileList);
-        return new FileTreeResponse(projectFileNodes).files();
+        return new FileTreeResponse(projectFileNodes);
     }
 
     @Override

@@ -67,14 +67,4 @@ public class UsageServiceImpl implements UsageService {
                 .build();
         return usageLogRepository.save(newLog);
     }
-
-    @Override
-    public UsageTodayResponse getTodayUsageOfUser(Long userId) {
-        return null;
-    }
-
-    @Override
-    public PlanLimitsResponse getCurrentSubscriptionLimitsOfUser(Long userId) {
-        return null;
-    }
 }

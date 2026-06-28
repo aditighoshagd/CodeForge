@@ -1,13 +1,12 @@
 package com.codeforge.project.application.service;
 
 import com.codeforge.project.application.dto.project.FileContentResponse;
-import com.codeforge.project.application.dto.project.FileNode;
-
+import com.codeforge.project.application.dto.project.FileTreeResponse;
 
 import java.util.List;
 
 public interface ProjectFileService {
-    List<FileNode> getFileTree(Long projectId);
+    FileTreeResponse getFileTree(Long projectId);
 
     FileContentResponse getFileContent(Long projectId, String path);
 
