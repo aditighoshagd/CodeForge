@@ -1,9 +1,19 @@
 package com.codeforge.project.application.controller;
 
+import com.codeforge.project.application.dto.deploy.DeployResponse;
 import com.codeforge.project.application.dto.project.ProjectRequest;
 import com.codeforge.project.application.dto.project.ProjectResponse;
 import com.codeforge.project.application.dto.project.ProjectSummaryResponse;
+import com.codeforge.project.application.service.DeploymentService;
 import com.codeforge.project.application.service.ProjectService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +28,7 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final DeploymentService deploymentService;
 
     @GetMapping
     public ResponseEntity<List<ProjectSummaryResponse>> getMyProjects() {
@@ -45,7 +56,20 @@ public class ProjectController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{id}/deploy")
+    public ResponseEntity<DeployResponse> deployProject(@PathVariable Long id) {
+        return ResponseEntity.ok(deploymentService.deploy(id));
+    }
+
 }
+
+
+
+
+
+
+
+
 
 
 
