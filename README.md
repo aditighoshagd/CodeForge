@@ -14,4 +14,4 @@ AI-powered application builder inspired by modern no-code platforms.
 - Prompt-to-UI workflow
 
 ## Status
-🚧 Under Development
+🚧 Completed
