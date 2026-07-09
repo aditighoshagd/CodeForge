@@ -24,5 +24,3 @@ public class CorsConfig {
     }
 }
 
-// BE: api.codingshuttle.com -> Server -> add cors configuration
-// FE: www.codingshuttle.com

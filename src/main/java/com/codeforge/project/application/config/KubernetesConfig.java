@@ -10,6 +10,7 @@ public class KubernetesConfig {
 
     @Bean
     public KubernetesClient kubernetesClient() {
+
         return new KubernetesClientBuilder().build();
     }
 }
